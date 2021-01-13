@@ -4,17 +4,16 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "Products")
 public class Product {
@@ -45,19 +44,5 @@ public class Product {
     @Column(name = "UnitInStock")
     private Integer unitInStock;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sellerID", referencedColumnName = "id")
-    
-    private User user;
-
     private Instant createDate;
-
-    public Product() {
-
-    }
-
-    
-
-
-
 }

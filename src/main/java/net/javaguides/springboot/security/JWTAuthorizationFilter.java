@@ -47,10 +47,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (token != null) {
             // parse the token.
-            String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
-                    .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""))
-                    .getSubject();
+            String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes())).build()
+                    .verify(token.replace(TOKEN_PREFIX, "")).getSubject();
 
             if (user != null) {
                 // new arraylist means authorities

@@ -1,9 +1,11 @@
 package net.javaguides.springboot.mapper;
 
-import net.javaguides.springboot.dto.ProductRequest;
-import net.javaguides.springboot.dto.ProductResponse;
+import net.javaguides.springboot.dto.request.ProductRequest;
+import net.javaguides.springboot.dto.response.ProductResponse;
 import net.javaguides.springboot.model.Product;
-import net.javaguides.springboot.model.User;
+
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,22 +21,27 @@ public interface ProductMapper {
     @Mapping(target = "unitWeight", source = "productRequest.unitWeight")
     @Mapping(target = "unitInStock", source = "productRequest.unitInStock")
     @Mapping(target = "createDate", expression = "java(java.time.Instant.now())")
-    @Mapping(target = "user", source = "user")
-	static
-    Product mapProduct(ProductRequest productRequest, User user) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    Product mapProduct(ProductRequest productRequest);
 
-    @Mapping(target = "id", source = "productId")
-    @Mapping(target = "produtName", source = "productName")
-    @Mapping(target = "description", source = "description")
-    @Mapping(target = "category", source = "category")
-    @Mapping(target = "color", source = "color")
-    @Mapping(target = "quantityPerUnit", source = "quantityPerUnit")
-    @Mapping(target = "unitPrice", source = "unitPrice")
-    @Mapping(target = "unitWeight", source = "unitWeight")
-    @Mapping(target = "unitInStock", source = "unitInStock")
-    @Mapping(target = "userName", source = "user.username")
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "productName", source = "product.productName")
+    @Mapping(target = "description", source = "product.description")
+    @Mapping(target = "category", source = "product.category")
+    @Mapping(target = "color", source = "product.color")
+    @Mapping(target = "quantityPerUnit", source = "product.quantityPerUnit")
+    @Mapping(target = "unitPrice", source = "product.unitPrice")
+    @Mapping(target = "unitWeight", source = "product.unitWeight")
+    @Mapping(target = "unitInStock", source = "product.unitInStock")
     ProductResponse mapToDto(Product product);
+
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "productName", source = "product.productName")
+    @Mapping(target = "description", source = "product.description")
+    @Mapping(target = "category", source = "product.category")
+    @Mapping(target = "color", source = "product.color")
+    @Mapping(target = "quantityPerUnit", source = "product.quantityPerUnit")
+    @Mapping(target = "unitPrice", source = "product.unitPrice")
+    @Mapping(target = "unitWeight", source = "product.unitWeight")
+    @Mapping(target = "unitInStock", source = "product.unitInStock")
+    List<ProductResponse> mapToListDto(List<Product> product);
 }

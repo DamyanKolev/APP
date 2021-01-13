@@ -2,24 +2,28 @@ package net.javaguides.springboot.model;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Email;
 
-import org.hibernate.validator.constraints.Length;
-
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -33,57 +37,30 @@ public class User implements Serializable {
     private Long id;
 
     private String firstName;
-
-    @NotEmpty(message = "error.name.empty")
-    @Length(max = 50, message = "error.name.length")
     private String lastName;
-
-    @Email(message = "error.email.email")
-    @NotEmpty(message = "error.email.empty")
-    @Length(max = 80, message = "error.email.length")
     private String email;
-
     private String username;
-
     private String password;
-
     private String companyName;
-
-    // @NotEmpty(message = "error.address.empty")
-    @Length(max = 150, message = "error.address.length")
     private String address;
-
     private String city;
-
     private String region;
-
     private String postalCode;
-
     private String country;
-
     private Integer phone;
-
     private Instant created;
 
-    private Role role;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public User(String firstName, String lastName, String email, String username, String password, String companyName,
-            String address, String city, String region, String postalCode, String country, Integer phone,
-            Instant created, Role role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.companyName = companyName;
-        this.address = address;
-        this.city = city;
-        this.region = region;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.phone = phone;
-        this.created = created;
-        this.role = role;
+    private boolean enabled;
+
+    @OneToMany(targetEntity = Product.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Set<Product> products;
+
+    public void addProduct(Product product) {
+        products.add(product);
     }
-
 }

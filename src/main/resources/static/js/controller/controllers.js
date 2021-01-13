@@ -1,4 +1,6 @@
-app.controller("registerCustomerController", function ($scope, $http) {
+//controller for Registration
+app.controller("registerController", function ($scope, $http) {
+    // Customer object    
     $scope.customer = {
         firstName: "",
         lastName: "",
@@ -13,44 +15,92 @@ app.controller("registerCustomerController", function ($scope, $http) {
         phone: ""
 
     }
-    $scope.register = function () {
+
+    //User object
+    $scope.user = {
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        password: "",
+        address: "",
+    }
+
+    // Registration of User
+    $scope.registerUser = function () {
         $http({
             method: "POST",
-            url: "/api/user/",
+            url: "/api/auth/user/sign-up",
+            data: $scope.user
+        });
+    }
+
+    // Registration of Customer
+    $scope.registerCustomer = function () {
+        $http({
+            method: "POST",
+            url: "/api/auth/customer/sign-up",
             data: $scope.customer
         });
     }
 });
 
-
-app.controller("registerProductController", function ($scope, $http) {
+// controller for product
+app.controller("productController", function ($scope, $http) {
     $scope.product = {
-        name: "",
+        productName: "",
         description: "",
+        category: "",
+        color: "",
         quantityPerUnit: "",
         unitPrice: "",
         unitWeight: "",
         unitInStock: ""
     }
-    $scope.register = function () {
+
+    $scope.id = {};
+
+    $scope.products = [];
+
+    $scope.create = function () {
         $http({
             method: "POST",
-            url: "/api/product/",
-            data: $scope.customer
+            url: "/api/product/create",
+            data: $scope.product
         });
     }
+
+    $scope.page = function () {
+        $http({
+            method: "GET",
+            url: "/api/product/list-products",
+        }).then(function successCallback(response) {
+            $scope.products = response.data;
+            console.log(products)
+        });
+    }
+
+    $scope.deleteUser = function () {
+        $http({
+            method: "DELETE",
+            url: "/api/product/delete/" + $scope.id,
+
+        })
+    }
+
 });
 
-app.controller("userLogin", function ($scope, $http) {
+//authController
+app.controller("authController", function ($scope, $http) {
     $scope.user = {
         username: "",
         password: "",
     }
-    $scope.login = function () {
+    $scope.signIn = function () {
         $http({
-            method: "GET",
-            url: "/api/user/login",
-            data: $scope.customer
+            method: "POST",
+            url: "/api/auth/sign-in",
+            data: $scope.user
         });
     }
 });

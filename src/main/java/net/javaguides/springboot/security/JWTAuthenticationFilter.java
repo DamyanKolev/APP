@@ -29,7 +29,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
 
-        setFilterProcessesUrl(""); // Sets the default login URL to the provided parameter
+        // // Sets the default login URL to the provided parameter
+        // setFilterProcessesUrl("/api/auth/login");
     }
 
     @Override
@@ -53,9 +54,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
-        String body = ((User) auth.getPrincipal()).getUsername() + " " + token;
-
-        res.getWriter().write(body);
-        res.getWriter().flush();
+        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }

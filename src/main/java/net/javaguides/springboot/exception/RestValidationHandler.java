@@ -44,8 +44,10 @@ public class RestValidationHandler {
         fErrorDetails.setError_detail("Input Field Validation Failed");
         fErrorDetails.setError_developer_Message(mNotValidException.getClass().getName());
         fErrorDetails.setError_path(request.getRequestURI());
+        
         BindingResult result = mNotValidException.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
+        
         for (FieldError error : fieldErrors) {
             FieldValidationError fError = processFieldError(error);
             List<FieldValidationError> fValidationErrorsList = fErrorDetails.getErrors().get(error.getField());
